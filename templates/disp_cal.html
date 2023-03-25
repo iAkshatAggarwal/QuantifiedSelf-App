@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Intake: QuantifiedSelf</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='test.css')}}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Calories Tracker: QuantifiedSelf App</h1>
+            <p>Here's your record of your calories intake..</p>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/dash">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-10 col-sm-6 col-md-6">
+            <div class="card card-style mb-2">
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative;">
+                        <canvas id="overtime_cal"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            over_time_cal = JSON.parse({{over_time_cal | tojson}})
+            labels = JSON.parse({{ dates_label  | tojson}})
+    
+            new Chart(document.getElementById("overtime_cal"), {
+                    type: "line",
+                    data:
+                    {
+                        labels: labels,
+                        datasets: [{
+                            label: "Calories Over Time",
+                            
+                            data: over_time_cal,
+                            fill: false,
+                            borderColor: "rgb(75, 192, 192)",
+                            lineTension: 0.1
+                        }]
+                    },
+                    options: {}
+                });
+        </script>
+        <h3>Calories Intake:</h3>
+        {% if c_d|length == 0 %}
+        No record found. Add your data now!<br>
+        {% else %}
+        <table class="table" id="all-temps">
+            <tr>
+                <th scope="col">SNo</th>
+                <th scope="col">Time Stamp</th>
+                <th scope="col">Calorie</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+            {% for i in c_d %}
+            <tr>
+                <td>{{i["cal_id"]}}</td>
+                <td>{{i["cal_time"]}}</td>
+                <td>{{i["cal_value"]}}</td>
+                <td>{{i["cal_note"]}}</td>
+                <td>
+                    <a class="btn btn-outline-primary" href="/cal/{{i['cal_id']}}/update" role="button">Update</a>
+                    <a class="btn btn-outline-danger" href="/cal/{{i['cal_id']}}/delete" role="button">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        <a class="btn btn-outline-success" href="/add_cal/" role="button">+ Add Calories</a>
+    </div>
+    
+</body>
+
+</html>

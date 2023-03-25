@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Dashboard: QuantifiedSelf App</title>
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		<style>
+			.dark-mode {
+			background-color: black;
+			color: white;
+		  }
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<h1>Hello {{display_name}}!</h1>
+				<p>Let's start with tracking our vitals!</p>
+				<ul class="nav justify-content-end">
+					<li>
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" role="switch" onclick="myFunction()" id="flexSwitchCheckDefault">
+							<label class="form-check-label" for="flexSwitchCheckDefault">Dark Mode</label>
+						  </div>
+					</li>
+				</ul>
+				
+				<ul class="nav justify-content-end">
+					<li class="nav-item">
+					  <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+					</li>
+				  </ul>
+			</div>
+
+			<table class="table" id="all-records">
+				<tr>
+					<th width="25%" scope="col">Trackers</th>
+					<th width="30%" scope="col">Last tracked</th>
+					<th width="20%" scope="col"></th>
+					<th width="25%" scope="col"></th>
+				</tr>
+				
+				<tr>
+					<td><a href="/temp_record/">Temperature</td>
+					<td>{{tlm["temp_time"]}}</td>
+					<td><a href="/add_temp/" class="centre">+</a></td>
+					{% for i in s_d %}
+					<td>
+						<a href="/temp/{{i['temp_id']}}/update" type="button">Update</a>
+						<a href="/temp/{{i['temp_id']}}/delete" type="button">Delete</a>
+					</td>
+					{% endfor %}
+				</tr>
+				
+				<tr>
+					<td><a href="/run_record/">Run</td>
+					<td>{{rlm["run_time"]}}</td>
+					<td><a href="/add_run/" class="centre">+</a></td>
+					{% for i in s_d %}
+					<td>
+						<a href="/run/{{i['run_id']}}/update" type="button">Update</a>
+						<a href="/run/{{i['run_id']}}/delete" type="button">Delete</a>
+					</td>
+					{% endfor %}
+				</tr>
+				
+				<tr>
+					<td><a href="/mood_record/">Mood</td>
+					<td>{{mlm["mood_time"]}}</td>
+					<td><a href="/add_mood/" class="centre">+</a></td>
+					{% for i in s_d %}
+					<td>
+						<a href="/mood/{{i['mood_id']}}/update" type="button">Update</a>
+						<a href="/mood/{{i['mood_id']}}/delete" type="button">Delete</a>
+					</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<td><a href="/spo2_record/">SpO2</td>
+					<td>{{slm["s_time"]}}</td>
+					<td><a href="/add_sp02/" class="centre">+</a></td>
+					{% for i in s_d %}
+					<td>
+						<a href="/spo2/{{i['s_id']}}/update" type="button">Update</a>
+						<a href="/sp02/{{i['s_id']}}/delete" type="button">Delete</a>
+					</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<td><a href="/cal_record/">Calories</td>
+					<td>{{clm["cal_time"]}}</td>
+					<td><a href="/add_cal/" class="centre">+</a></td>
+					{% for i in s_d %}
+					<td>
+						<a href="/cal/{{i['cal_id']}}/update" type="button">Update</a>
+						<a href="/cal/{{i['cal_id']}}/delete" type="button">Delete</a>
+					</td>
+					{% endfor %}
+				</tr>
+				<script>
+					function myFunction() {
+					var element = document.body;
+					element.classList.toggle("dark-mode");
+				  }
+				</script>
+			</table>
+			
+		</div>
+	</body>
+</html>
